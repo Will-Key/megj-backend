@@ -35,7 +35,9 @@ export class MessageService {
   async scheduleCampaignCreate(id: string) {
     try {
       await lastValueFrom(this.http.post(`campaigns/${id}/schedules`, null));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   private buildPayloadForCreatingCampaign(phoneNumber: string) {
