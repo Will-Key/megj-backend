@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "env": {
+    "LETEXTO_URL": "https://api.letexto.com/v1/campaigns",
+    "LETEXTO_KEY": "wnScP3MdEWFYSWOgKKr9KWoLHVytFq",
+    "LETEXTO_SENDER": "0575806605"
+  },
   "builds": [
     {
       "src": "src/main.ts",
