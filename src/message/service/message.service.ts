@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { lastValueFrom, map, tap } from 'rxjs';
+import { lastValueFrom, map } from 'rxjs';
 import { CREATE_CAMPAIGN_PAYLOAD } from '../utils';
 
 @Injectable()
@@ -15,11 +15,7 @@ export class MessageService {
     try {
       return lastValueFrom(
         this.createCampaign(phoneNumber).pipe(
-          tap((response) => this.scheduleCampaignCreate(response.data.id)),
-          map((response) => ({
-            id: response.data.id,
-            message: 'Campagne créé avec succès',
-          })),
+          map((response) => this.scheduleCampaignCreate(response.data.id)),
         ),
       );
     } catch (error) {}
@@ -34,7 +30,13 @@ export class MessageService {
 
   async scheduleCampaignCreate(id: string) {
     try {
-      await lastValueFrom(this.http.post(`campaigns/${id}/schedules`, null));
+      return await lastValueFrom(
+        this.http.post(`campaigns/${id}/schedules`, null).pipe(
+          map(() => ({
+            message: 'Message envoyé avec succès',
+          })),
+        ),
+      );
     } catch (error) {
       console.log(error);
     }
